@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-primary {
+  background-color: #f87070;
+}
+
+.bg-purple-light {
+  background-color: #1e2140;
+}
+
+.bg-purple-dark {
+  background-color: #151932;
+}
+
+.text-light {
+  color: #d7e0fd;
+}
+
+.text-grey {
+  color: #666a85;
+}
+
+.text-dark {
+  color: #230c29;
+}
