@@ -11,7 +11,6 @@ const targetDate = new Date();
 targetDate.setSeconds(targetDate.getSeconds() + 1);
 targetDate.setMinutes(targetDate.getMinutes() + 1);
 
-
 const totalTime = targetDate.getTime() - new Date().getTime();
 
 export default function MyTabs() {
@@ -80,13 +79,17 @@ export default function MyTabs() {
                 <button
                   onClick={() => setIsPausing(!isPausing)}
                   type="button"
-                  className={`${styles.button} action-button  text-light z-10 text-2xl font-bold uppercase`}
+                  className={`${
+                    styles.button || ""
+                  } action-button text-light z-10 text-2xl font-bold uppercase`}
                 >
                   {isPausing ? "Start" : "Pause"}
                 </button>
 
                 <Circle
-                  className={`${styles["circle-progress-bar"]} circle-progress-bar absolute z-0 w-96`}
+                  className={`${
+                    styles["circle-progress-bar"] || ""
+                  } circle-progress-bar absolute z-0 w-96`}
                   percent={percentage}
                   strokeWidth={3}
                   trailColor="#1e2140"
