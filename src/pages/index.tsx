@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import MyTabs from "~/components/timer-tabs";
 
 const Home: NextPage = () => {
@@ -27,6 +26,7 @@ const Home: NextPage = () => {
         <h1 className="text-4xl font-bold tracking-wider text-indigo-200">
           pomodoro
         </h1>
+
         <MyTabs></MyTabs>
       </main>
     </>

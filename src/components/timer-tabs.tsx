@@ -1,54 +1,45 @@
-import { useEffect, useState } from "react";
 import { Tab } from "@headlessui/react";
-import styles from "./timer-tabs.module.css";
-import { Circle } from "rc-progress";
+import Timer from "./timer";
+import { useState } from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const targetDate = new Date();
-targetDate.setSeconds(targetDate.getSeconds() + 1);
-targetDate.setMinutes(targetDate.getMinutes() + 1);
-
-const totalTime = targetDate.getTime() - new Date().getTime();
-
 export default function MyTabs() {
-  const categories = ["pomodoro", "short break", "long break"];
+  const pomodoroDuration = 25 * 60 * 1000;
+  const shortBreakDuration = 5 * 60 * 1000;
+  const longBreakDuration = 10 * 60 * 1000;
 
-  const [timeRemain, setTimeRemain] = useState(
-    targetDate.getTime() - new Date().getTime()
-  );
+  const [pomodoroTimeRamain, setPomodoroTimeRemain] =
+    useState(pomodoroDuration);
+  const [shortBreakTimeRamain, setshortBreakTimeRemain] =
+    useState(shortBreakDuration);
+  const [longBreakRamain, setlongBreakRemain] = useState(longBreakDuration);
 
-  const [isPausing, setIsPausing] = useState(true);
-  const [percentage, setPercentage] = useState(100);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isPausing && timeRemain > 0) {
-        const remaining = timeRemain - 100;
-
-        if (remaining > 0) {
-          setTimeRemain(remaining);
-          setPercentage((remaining / totalTime) * 100);
-        } else {
-          setTimeRemain(0);
-          setPercentage(0);
-        }
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  });
-
-  const minutes = Math.floor((timeRemain % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeRemain % (1000 * 60)) / 1000);
+  const tabContent = {
+    pomodoro: {
+      duration: pomodoroDuration,
+      timeRemain: pomodoroTimeRamain,
+      setTimeRemain: setPomodoroTimeRemain,
+    },
+    "short break": {
+      duration: shortBreakDuration,
+      timeRemain: shortBreakTimeRamain,
+      setTimeRemain: setshortBreakTimeRemain,
+    },
+    "long break": {
+      duration: longBreakDuration,
+      timeRemain: longBreakRamain,
+      setTimeRemain: setlongBreakRemain,
+    },
+  };
 
   return (
     <div className="w-full max-w-md px-2 py-16 sm:px-0">
       <Tab.Group>
         <Tab.List className="bg-purple-dark flex space-x-1 rounded-full p-2">
-          {categories.map((category) => (
+          {Object.keys(tabContent).map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
@@ -65,37 +56,22 @@ export default function MyTabs() {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          {categories.map((category, idx) => (
+          {Object.keys(tabContent).map((category, idx) => (
             <Tab.Panel
               key={idx}
               className="btn-gradient-2 mx-auto mt-24 rounded-full"
             >
-              <div className="relative flex h-96 flex-col items-center justify-center gap-8">
-                <p className="text-light text-9xl font-bold text-white">
-                  {minutes.toString().padStart(2, "0")} :{" "}
-                  {seconds.toString().padStart(2, "0")}
-                </p>
-
-                <button
-                  onClick={() => setIsPausing(!isPausing)}
-                  type="button"
-                  className={`${
-                    styles.button || ""
-                  } action-button text-light z-10 text-2xl font-bold uppercase`}
-                >
-                  {isPausing ? "Start" : "Pause"}
-                </button>
-
-                <Circle
-                  className={`${
-                    styles["circle-progress-bar"] || ""
-                  } circle-progress-bar absolute z-0 w-96`}
-                  percent={percentage}
-                  strokeWidth={3}
-                  trailColor="#1e2140"
-                  strokeColor="#f87070"
-                />
-              </div>
+              <Timer
+                duration={
+                  tabContent[category as keyof typeof tabContent].duration
+                }
+                timeRemain={
+                  tabContent[category as keyof typeof tabContent].timeRemain
+                }
+                setTimeRemain={
+                  tabContent[category as keyof typeof tabContent].setTimeRemain
+                }
+              ></Timer>
             </Tab.Panel>
           ))}
         </Tab.Panels>
