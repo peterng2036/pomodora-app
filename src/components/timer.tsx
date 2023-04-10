@@ -1,6 +1,7 @@
 import { Circle } from "rc-progress";
 import { useEffect, useState } from "react";
 import styles from "./timer.module.css";
+import { clearInterval, setInterval } from "worker-timers";
 
 export default function Timer({
   duration,
